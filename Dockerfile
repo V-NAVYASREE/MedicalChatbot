@@ -1,19 +1,19 @@
 FROM python:3.10-slim-buster
 
-# Create working directory
 WORKDIR /app
 
-# Copy dependencies first
-COPY requirements.txt .
+# Install system dependencies for pymupdf
+RUN apt-get update && apt-get install -y \
+    libmupdf-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install dependencies
+# Install Python packages
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy remaining project files
+# Copy entire project
 COPY . .
 
-# Expose Flask port
 EXPOSE 8080
 
-# Run your Flask app
 CMD ["python", "app.py"]
