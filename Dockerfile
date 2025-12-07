@@ -1,17 +1,17 @@
-FROM python:3.10-slim-buster
+FROM python:3.10-slim
 
 WORKDIR /app
 
-# Install system dependencies for pymupdf
+# Install any needed system dependencies
 RUN apt-get update && apt-get install -y \
-    libmupdf-dev \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python packages
+# Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy entire project
+# Copy project code
 COPY . .
 
 EXPOSE 8080
